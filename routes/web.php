@@ -25,4 +25,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks', [TaskPageController::class, 'index'])->name('tasks.index');
 
     Route::post('/tasks/{task}/toggle', [TaskPageController::class, 'toggle'])->name('tasks.toggle');
+    Route::post('/tasks', [TaskPageController::class, 'addTask'])->name('tasks.add');
+    Route::delete('/tasks/{task}', [TaskPageController::class, 'deleteTask'])->name('tasks.delete');
 });

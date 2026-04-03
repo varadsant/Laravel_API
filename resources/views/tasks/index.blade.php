@@ -116,7 +116,7 @@
                             {{ $task->is_completed ? 'Completed' : 'Pending' }}
                         </button>
 
-                        <button class="delete-btn absolute right-2 
+                        <button class="delete-btn cursor-pointer absolute right-2 
                         text-red-400 hover:text-red-600" data-id="{{ $task->id }}"
                         onclick="deleteTask({{ $task->id }})">
                             🗑️

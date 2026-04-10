@@ -1,5 +1,20 @@
 @extends('layouts.auth')
 
+<style>
+    .task-status-btn {
+        color: #fff;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .task-status-btn.is-pending {
+        background-color: #ef4444;
+    }
+
+    .task-status-btn.is-completed {
+        background-color: #22c55e;
+    }
+</style>
+
 <script>
     function toggleStatus(taskId, button){
         console.log('Toggling status for task ID:', taskId);
@@ -15,11 +30,11 @@
         .then(data => {
             button.textContent = data.status;
             if (data.status === 'Completed') {
-                button.classList.remove('bg-red-500');
-                button.classList.add('bg-green-500');
+                button.classList.remove('is-pending');
+                button.classList.add('is-completed');
             } else {
-                button.classList.remove('bg-green-500');
-                button.classList.add('bg-red-500');
+                button.classList.remove('is-completed');
+                button.classList.add('is-pending');
             }
         })
         .catch(error => {
@@ -52,7 +67,7 @@
                 newTask.className = 'rounded-2xl border border-white/10 bg-white/5 px-4 py-3';
                 newTask.innerHTML = `${data.task.title}
                     <button
-                        class="ml-2 inline-flex items-center rounded-full cursor-pointer px-2 py-0.5 text-xs font-medium text-white bg-red-500"
+                        class="task-status-btn is-pending ml-2 inline-flex items-center rounded-full cursor-pointer px-2 py-0.5 text-xs font-medium"
                         onclick="toggleStatus(${data.task.id}, this)">
                         Pending
                     </button>`;
@@ -107,11 +122,11 @@
         <ul class="mt-6 space-y-2 text-stone-200">
             @if (!empty($tasks) && count($tasks) > 0)
                 @foreach ($tasks as $task)
-                    <li class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                    <li class="relative rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                         {{ $task->title }}
                         <button
-                            class="ml-2 inline-flex items-center rounded-full cursor-pointer px-2 py-0.5 text-xs font-medium text-white
-                                {{ $task->is_completed ? 'bg-green-500' : 'bg-red-500' }}"
+                            class="task-status-btn ml-2 inline-flex items-center rounded-full cursor-pointer px-2 py-0.5 text-xs font-medium
+                                {{ $task->is_completed ? 'is-completed' : 'is-pending' }}"
                             onclick="toggleStatus({{ $task->id }}, this)">
                             {{ $task->is_completed ? 'Completed' : 'Pending' }}
                         </button>
@@ -152,4 +167,3 @@
         </a>
     </div>
 @endsection
-

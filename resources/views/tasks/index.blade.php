@@ -116,7 +116,7 @@
 </script>
 
 @section('content')
-    <div class="flex min-h-[60vh] flex-col">
+    <div class="flex min-h-[60vh] flex-col w-full">
         <h1 class="text-2xl font-semibold text-white">{{ Auth::user()->name }}'s Tasks</h1>
 
         <ul class="mt-6 space-y-2 text-stone-200">

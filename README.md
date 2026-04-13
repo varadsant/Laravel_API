@@ -1,59 +1,104 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Task API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A simple Laravel task management application with API authentication and a Blade-based task dashboard.
 
-## About Laravel
+## What this project does
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Manages users and tasks using Laravel.
+- Supports user registration, login, and logout via API routes.
+- Allows logged-in users to create tasks, toggle task status, and delete tasks.
+- Uses Blade templates and plain JavaScript on the task page.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Laravel (PHP)
+- Laravel Sanctum for API token authentication
+- Blade templates for views
+- Tailwind CSS for styling
+- Vite for frontend asset bundling
+- Plain JavaScript for task interactions
 
-## Learning Laravel
+## React in this project
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+This project does not use React. The task page is built with Blade and vanilla JavaScript functions instead of React components.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Key frontend functions
 
-## Laravel Sponsors
+The task dashboard uses these JavaScript functions:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- `toggleStatus(taskId, button)`
+    - Sends a POST request to toggle a task's completed status.
+    - Updates the button text and CSS class based on the new status.
 
-### Premium Partners
+- `addTask()`
+    - Reads the task title from the input field.
+    - Sends a POST request to create a new task.
+    - Adds the new task to the page without reloading.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- `deleteTask(taskId)`
+    - Sends a DELETE request for the selected task.
+    - Removes the task from the page when successful.
 
-## Contributing
+These functions use `fetch()` and include the CSRF token for security.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## API routes
 
-## Code of Conduct
+Defined in `routes/api.php`:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- `POST /register` — register a new user
+- `POST /login` — log in and receive an API token
+- `POST /logout` — log out the authenticated user
+- `apiResource('tasks', TaskController::class)` — task endpoints for authenticated users
 
-## Security Vulnerabilities
+The `tasks` resource includes:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- `GET /tasks` — list current user tasks
+- `POST /tasks` — create a new task
+- `DELETE /tasks/{task}` — delete a task
 
-## License
+## Important files
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- `app/Http/Controllers/Api/AuthController.php` — handles user registration, login, and logout
+- `app/Http/Controllers/Api/TaskController.php` — handles task creation and listing
+- `app/Models/User.php` — defines user-task relationship
+- `app/Models/Task.php` — task model and fillable fields
+- `resources/views/tasks/index.blade.php` — task dashboard and JavaScript functions
+- `resources/js/app.js` — frontend entry point that imports `bootstrap.js`
+- `resources/js/bootstrap.js` — handles client-side bootstrap logic
+
+## Setup
+
+1. Install PHP dependencies:
+
+    ```bash
+    composer install
+    ```
+
+2. Install JavaScript dependencies:
+
+    ```bash
+    npm install
+    ```
+
+3. Run database migrations:
+
+    ```bash
+    php artisan migrate
+    ```
+
+4. Start the development server:
+
+    ```bash
+    php artisan serve
+    ```
+
+5. Build frontend assets during development:
+
+    ```bash
+    npm run dev
+    ```
+
+## Notes
+
+- The repository is currently an API-backed Laravel app with Blade views and vanilla JavaScript.
+- There are no React components or React hooks in this codebase.
